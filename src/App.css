@@ -1,0 +1,301 @@
+/* src/App.css - HOLLYWOOD GÜVENLİK SİSTEMİ */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #000;
+  color: #0f0;
+  font-family: 'Orbitron', sans-serif;
+  overflow: hidden;
+  height: 100vh;
+}
+
+.app {
+  height: 100vh;
+  background: 
+    radial-gradient(circle at 30% 30%, #001133 0%, #000 60%),
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="200" height="200" fill="%23000"/><circle cx="100" cy="100" r="50" fill="none" stroke="%23003311" stroke-width="1"/><circle cx="100" cy="100" r="80" fill="none" stroke="%23003311" stroke-width="1"/></svg>');
+  background-size: cover, 200px 200px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.app::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 255, 136, 0.03) 2px,
+    rgba(0, 255, 136, 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Üst Panel */
+.top-bar {
+  background: linear-gradient(to bottom, #111 0%, #000 100%);
+  border-bottom: 3px double #0f0;
+  padding: 0.8rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  box-shadow: 0 0 30px rgba(0, 255, 0, 0.4);
+  z-index: 10;
+}
+
+.system-name {
+  color: #0f0;
+  font-weight: 900;
+  text-shadow: 0 0 15px #0f0, 0 0 30px #0f0;
+  letter-spacing: 3px;
+  font-size: 1.1rem;
+}
+
+.time-display {
+  color: #0ff;
+  font-weight: 700;
+  text-shadow: 0 0 15px #0ff;
+  font-size: 1rem;
+}
+
+.status-lights {
+  display: flex;
+  gap: 1.2rem;
+  font-size: 0.8rem;
+}
+
+.light {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.light-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #333;
+  box-shadow: 0 0 10px #000, inset 0 0 5px #000;
+}
+
+.light-dot.online { 
+  background: #0f0; 
+  box-shadow: 0 0 20px #0f0, 0 0 40px #0f0;
+  animation: pulse 1.5s infinite;
+}
+
+.light-dot.motion { 
+  background: #f00; 
+  box-shadow: 0 0 20px #f00, 0 0 40px #f00;
+  animation: blink 0.4s infinite;
+}
+
+/* Ana Kamera */
+.main-feed {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+  z-index: 2;
+}
+
+.camera-box {
+  position: relative;
+  width: 720px;
+  height: 480px;
+  border: 4px solid #0f0;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 
+    0 0 40px rgba(0, 255, 0, 0.6),
+    inset 0 0 60px rgba(0, 255, 0, 0.15);
+  background: #000;
+  transform: perspective(1200px) rotateX(3deg);
+  transition: all 0.5s ease;
+}
+
+.camera-box.motion-active {
+  border-color: #f00;
+  box-shadow: 
+    0 0 80px rgba(255, 0, 0, 0.9),
+    inset 0 0 100px rgba(255, 0, 0, 0.3);
+  transform: perspective(1200px) rotateX(0deg) scale(1.03);
+}
+
+.camera-id {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(0, 0, 0, 0.85);
+  color: #0f0;
+  padding: 6px 14px;
+  font-size: 0.75rem;
+  font-weight: 900;
+  border: 2px solid #0f0;
+  border-radius: 6px;
+  z-index: 10;
+  text-shadow: 0 0 10px #0f0;
+  letter-spacing: 1.5px;
+}
+
+.scan-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #0f0, #0ff, #0f0, transparent);
+  animation: scan 4s linear infinite;
+  z-index: 5;
+  opacity: 0.6;
+  filter: blur(1px);
+}
+
+.video-canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: contrast(1.15) brightness(1.08) saturate(1.1);
+}
+
+.motion-alert {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: linear-gradient(135deg, #f00, #c00);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 25px;
+  font-size: 0.8rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 20;
+  animation: alertPulse 1.2s infinite;
+  box-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
+  border: 2px solid #fff;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.alert-icon {
+  width: 20px;
+  height: 20px;
+  background: white;
+  color: #f00;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.bottom-panel {
+  background: linear-gradient(to top, #111, #000);
+  border-top: 3px double #0f0;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  box-shadow: 0 0 30px rgba(0, 255, 0, 0.4);
+  z-index: 10;
+}
+
+.control-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn-3d {
+  padding: 14px 28px;
+  background: linear-gradient(to bottom, #0f0, #0c0);
+  color: black;
+  border: none;
+  border-radius: 10px;
+  font-weight: 900;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 
+    0 5px 0 #080,
+    0 0 20px rgba(0, 255, 0, 0.6);
+  transition: all 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.btn-3d:hover {
+  transform: translateY(-3px);
+  box-shadow: 
+    0 8px 0 #080,
+    0 0 30px rgba(0, 255, 0, 0.8);
+}
+
+.btn-3d:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #080;
+}
+
+.data-stream {
+  display: flex;
+  gap: 2rem;
+  font-size: 0.8rem;
+  color: #0ff;
+}
+
+.data-item {
+  text-align: center;
+}
+
+.data-label {
+  color: #666;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+}
+
+.data-value {
+  color: #0f0;
+  font-weight: bold;
+  text-shadow: 0 0 15px #0f0;
+  font-size: 1.1rem;
+}
+
+@keyframes scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(600px); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes alertPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@media (max-width: 768px) {
+  .camera-box { width: 100%; height: auto; }
+  .bottom-panel { flex-direction: column; }
+}
